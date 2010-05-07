@@ -1,3 +1,4 @@
+<?php use_stylesheet('jobs.css') ?>
 <h1>Jobeet jobs List</h1>
 
 <table>

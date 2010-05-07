@@ -1,3 +1,4 @@
+<?php use_stylesheet('job.css') ?>
 <table>
   <tbody>
     <tr>
