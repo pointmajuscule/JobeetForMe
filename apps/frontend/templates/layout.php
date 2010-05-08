@@ -12,7 +12,7 @@
       <div id="header">
         <div class="content">
           <h1><a href="<?php echo url_for('job/index') ?>">
-              <img src="http://www.symfony-project.org/images/logo.jpg" alt="Jobeet Job Board" />
+              <img src="/images/logo.jpg" alt="Jobeet Job Board" />
               </a>
           </h1>
 
@@ -59,9 +59,9 @@
       <div id="footer">
         <div class="content">
           <span class="symfony">
-            <img src="http://www.symfony-project.org/images/jobeet-mini.png" />
+            <img src="/images/jobeet-mini.png" />
             powered by <a href="http://symfony-project.org/">
-            <img src="http://www.symfony.project.org/images/symfony.gif" alt="symfony framework" />
+            <img src="/images/symfony.gif" alt="symfony framework" />
             </a>
           </span>
           <ul>
