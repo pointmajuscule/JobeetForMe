@@ -4,6 +4,9 @@
 job_show_user:
   url:   /job/:company/:location/:id/:position
   param: { module: job, action: show }
+  requirements:
+    id: \d+
+
 # default rules
 homepage:
   url:   /
