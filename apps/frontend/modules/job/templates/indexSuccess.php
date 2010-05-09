@@ -7,7 +7,7 @@
         <div class="feed">
           <a href="">Feed</a>
         </div>
-        <h1><?php echo $category ?></h1>
+        <h1><?php echo link_to($category, 'category', $category) ?></h1>
       </div>
 
       <table class="jobs">
@@ -25,6 +25,12 @@
           </tr>
         <?php endforeach ?>
       </table>
+
+      <?php if (($count = $category->countActiveJobs() - sfConfig::get('app_max_jobs_on_homepage')) > 0): ?>
+        <div class="more_jobs">
+          and <?php echo link_to($count, 'category', $category) ?> more...
+        </div>
+      <?php endif; ?>
     </div>
   <?php endforeach; ?>
 </div>
