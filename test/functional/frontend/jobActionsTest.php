@@ -70,8 +70,7 @@ $browser->info('2 - The job page')->
     isParameter('location_slug', $job->getLocationSlug())->
     isParameter('position_slug', $job->getPositionSlug())->
     isParameter('id', $job->getId())->
-  end()
-;
+  end() ->
 
   info(' 2.2 - A non-existent job forwards the user to a 404')->
   get('/job/foo-inc/milano-italy/0/painter')->

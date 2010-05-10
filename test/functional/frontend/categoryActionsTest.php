@@ -35,13 +35,13 @@ $browser->info('1 - The category page')->
   info(' 1.4 - The job listed is paginated')->
   with('response')->begin()->
     checkElement('.pagination_desc', '/32 jobs/')->
-    checkElement('.pagination_desc', '#page 1/2#')->
+    checkElement('.pagination_desc', '#page 1/4#')->
   end()->
 
   click('2')->
   with('request')->begin()->
     isParameter('page', 2)->
   end()->
-  with('response')->checkElement('.pagination_desc', '#page 2/2#')
+  with('response')->checkElement('.pagination_desc', '#page 2/4#')
 ;
 ;
