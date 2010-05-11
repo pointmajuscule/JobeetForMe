@@ -11,7 +11,7 @@ class JobeetJobTable extends Doctrine_Table
 
   public function getTypes()
   {
-    return sefl::$types;
+    return self::$types;
   }
 
     public static function getInstance()
