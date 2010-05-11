@@ -49,4 +49,26 @@ class JobeetJob extends BaseJobeetJob
 
     return parent::save($conn);
   }
+
+  public function getTypeName()
+  {
+    $types = Doctrine_Core::getTable('JobeetJob')->getTypes();
+    return $this->getType() ? $types[$this->getType()] : '';
+  }
+
+  public function isExpired()
+  {
+    return $this->getDaysBeforeExpires() < 0;
+  }
+
+  public function expiresSoon()
+  {
+    return $this->getDaysBeforeExpires() < 5;
+  }
+
+  public function getDaysBeforeExpires()
+  {
+    return ceil(($this->getDateTimeObject('expires_at')->format('U')
+      - time()) / 86400);
+  }
 }
