@@ -27,29 +27,20 @@ class jobActions extends sfActions
 
   public function executeCreate(sfWebRequest $request)
   {
-    $this->forward404Unless($request->isMethod(sfRequest::POST));
-
     $this->form = new JobeetJobForm();
-
     $this->processForm($request, $this->form);
-
     $this->setTemplate('new');
   }
 
   public function executeEdit(sfWebRequest $request)
   {
-    $this->forward404Unless($jobeet_job = Doctrine::getTable('JobeetJob')->find(array($request->getParameter('id'))), sprintf('Object jobeet_job does not exist (%s).', $request->getParameter('id')));
-    $this->form = new JobeetJobForm($jobeet_job);
+    $this->form = new JobeetJobForm($this->getRoute()->getObject());
   }
 
   public function executeUpdate(sfWebRequest $request)
   {
-    $this->forward404Unless($request->isMethod(sfRequest::POST) || $request->isMethod(sfRequest::PUT));
-    $this->forward404Unless($jobeet_job = Doctrine::getTable('JobeetJob')->find(array($request->getParameter('id'))), sprintf('Object jobeet_job does not exist (%s).', $request->getParameter('id')));
-    $this->form = new JobeetJobForm($jobeet_job);
-
+    $this->form = new JobeetJobForm($this->getRoute()->getObject());
     $this->processForm($request, $this->form);
-
     $this->setTemplate('edit');
   }
 
@@ -57,20 +48,25 @@ class jobActions extends sfActions
   {
     $request->checkCSRFProtection();
 
-    $this->forward404Unless($jobeet_job = Doctrine::getTable('JobeetJob')->find(array($request->getParameter('id'))), sprintf('Object jobeet_job does not exist (%s).', $request->getParameter('id')));
-    $jobeet_job->delete();
+    $job = $this->getRoute()->getObject();
+
+    $job->delete();
 
     $this->redirect('job/index');
   }
 
   protected function processForm(sfWebRequest $request, sfForm $form)
   {
-    $form->bind($request->getParameter($form->getName()), $request->getFiles($form->getName()));
+    $form->bind(
+      $request->getParameter($form->getName()),
+      $request->getFiles($form->getName())
+    );
+
     if ($form->isValid())
     {
-      $jobeet_job = $form->save();
+      $job = $form->save();
 
-      $this->redirect('job/edit?id='.$jobeet_job->getId());
+      $this->redirect('job_show', $job);
     }
   }
 }
