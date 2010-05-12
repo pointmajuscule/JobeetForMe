@@ -29,9 +29,9 @@ class JobeetTestFunctional extends sfTestFunctional
     return $q->fetchOne();
   }
 
-  public function createJob($values = array())
+  public function createJob($values = array(), $publish = false)
   {
-    return $this->
+    $this->
       get('/job/new')->
       click('Preview your job', array('job' => array_merge(array(
         'company'       => 'Sensio Labs',
@@ -46,5 +46,24 @@ class JobeetTestFunctional extends sfTestFunctional
       ), $values)))->
       followRedirect()
     ;
+
+    if ($publish)
+    {
+      $this->
+        click('Publish', array(), array('method' => 'put', '_with_csrf' => true))->
+        followRedirect()
+      ;
+    }
+
+    return $this;
+  }
+
+  public function getJobByPosition($position)
+  {
+    $q = Doctrine_Query::create()
+      ->from('JobeetJob j')
+      ->where('j.position = ?', $position);
+
+      return $q->fetchOne();
   }
 }
