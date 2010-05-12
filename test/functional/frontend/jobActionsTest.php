@@ -110,6 +110,8 @@ $browser->info('3 - Post a Job page')->
   end()
 ;
 
+$browser->setTester('doctrine', 'sfTesterDoctrine');
+
 $browser->info(' 3.2 - Submit a Job with invalid values')->
   get('/job/new')->
   click('Preview your job', array('job' => array(
@@ -124,5 +126,17 @@ $browser->info(' 3.2 - Submit a Job with invalid values')->
     isError('description', 'required')->
     isError('how_to_apply', 'required')->
     isError('email', 'invalid')->
+  end()
+;
+
+$browser->info(' 3.3 - On the preview page, you can publish the job')->
+  createJob(array('position' => 'F001'))->
+  click('Publish', array(), array('method' => 'put', '_with_csrf' => true))->
+
+  with('doctrine')->begin()->
+    check('JobeetJob', array(
+      'position'    => 'F001',
+      'is_activated' => true,
+    ))->
   end()
 ;
