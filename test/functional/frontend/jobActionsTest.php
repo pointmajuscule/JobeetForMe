@@ -140,3 +140,14 @@ $browser->info(' 3.3 - On the preview page, you can publish the job')->
     ))->
   end()
 ;
+
+$browser->info(' 3.4 - On the preview page, you can delete the job')->
+  createJob(array('position' => 'F002'))->
+  click('Delete', array(), array('method' => 'delete', '_with_csrf' => true))->
+
+  with('doctrine')->begin()->
+    check('JobeetJob', array(
+      'position' => 'F002',
+    ), false)->
+  end()
+;
