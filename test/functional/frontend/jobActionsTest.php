@@ -161,3 +161,44 @@ $browser->getJobByPosition('F003')->getToken()))->
     isStatusCode(404)->
   end()
 ;
+
+$browser->info(' 3.6 - A job validity cannot be extended before the
+job expires soon')->
+  createJob(array('position' => 'F004'), true)->
+  call(sprintf('/job/%s/extend',
+$browser->getJobByPosition('F004')->getToken()), 'put', array('_with_csrf' => true))->
+  with('response')->begin()->
+    isStatusCode(404)->
+  end()
+;
+
+$browser->info(' 3.7 - A job validity can be extended when the job expires soon')->
+  createJob(array('position' => 'F005'), true)
+;
+
+$job = $browser->getJobByPosition('F005');
+$job->setExpiresAt(date('Y-m-d'));
+$job->save();
+
+$browser->
+  call(sprintf('/job/%s/extend', $job->getToken()), 'put',
+  array('_with_csrf' => true))->
+  with('response')->isRedirected()
+;
+
+$job->refresh();
+$browser->test()->is(
+  $job->getDateTimeObject('expires_at')->format('y/m/d'),
+  date('y/m/d', time() + 86400 * sfConfig::get('app_active_days'))
+);
+
+$browser->get('/job/new')->
+  click('Preview your job', array('job' => array(
+    'token' => 'fake_token',
+  )))->
+
+  with('form')->begin()->
+    hasErrors(7)->
+    hasGlobalError('extra_fields')->
+  end()
+  ;

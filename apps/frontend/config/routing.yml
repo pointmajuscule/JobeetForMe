@@ -13,6 +13,7 @@ job:
     column: token
     object_actions:
       publish: put
+      extend: put
   requirements:
     token:  \w+
 

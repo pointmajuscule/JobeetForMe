@@ -74,6 +74,20 @@ class jobActions extends sfActions
     $this->redirect('job/index');
   }
 
+  public function executeExtend(sfWebRequest $request)
+  {
+    $request->checkCSRFProtection();
+
+    $job = $this->getRoute()->getObject();
+    $this->forward404Unless($job->extend());
+
+    $this->getUser()->setFlash('notice', sprintf('Your job validity has been
+    extended until %s.', $job->getDateTimeObject('expires_at')->
+    format('m/d/Y')));
+
+    $this->redirect('job_show_user', $job);
+  }
+
   protected function processForm(sfWebRequest $request, sfForm $form)
   {
     $form->bind(
