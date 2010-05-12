@@ -155,7 +155,7 @@ $browser->info(' 3.4 - On the preview page, you can delete the job')->
 $browser->info(' 3.5 - When a job is published, it cannot be edited anymore')->
   createJob(array('position' => 'F003'), true)->
   get(sprintf('/job/%s/edit',
-$brower->getJobByPosition('F003')->getToken()))->
+$browser->getJobByPosition('F003')->getToken()))->
 
   with('response')->begin()->
     isStatusCode(404)->
