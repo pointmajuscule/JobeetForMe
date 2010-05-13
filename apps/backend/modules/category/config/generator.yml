@@ -19,7 +19,8 @@ generator:
         batch_actions: {}
         title: Category Management
         display: [=name, slug]
-      filter:  ~
+      filter:
+        class: false
       form:    ~
       edit:
         title: Editing Category "%%name%%"

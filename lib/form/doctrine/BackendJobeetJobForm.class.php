@@ -10,8 +10,7 @@ class BackendJobeetJobForm extends JobeetJobForm
       'file_src'  => '/uploads/jobs/'.$this->getObject()->getLogo(),
       'is_image'  => true,
       'edit_mode' => !$this->isNew(),
-      'template'  => '<div>%file%<br />%input%<br />%delete%
-        %delete_label%</div>',
+      'template'  => '<div>%file%<br />%input%<br />%delete%%delete_label%</div>',
       ));
 
     $this->validatorSchema['logo_delete'] = new sfValidatorPass();

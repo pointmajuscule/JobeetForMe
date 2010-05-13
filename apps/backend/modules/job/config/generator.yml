@@ -40,7 +40,8 @@ generator:
         params: |
           %%is_activated%% <small>%%jobeet_category%%</small> - %%company%%
           (<em>%%email%%</em>) is looking for a %%=position%% (%%location%%)
-      filter:  ~
+      filter:
+        display: [category_id, company, position, description, is_activated, is_public, email, expires_at]
       form:
         class: BackendJobeetJobForm
         display:
