@@ -15,6 +15,7 @@ generator:
       actions: ~
       fields:  ~
       list:
+        object_actions: {}
         batch_actions: {}
         title: Category Management
         display: [=name, slug]

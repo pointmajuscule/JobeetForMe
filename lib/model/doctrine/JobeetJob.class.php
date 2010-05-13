@@ -78,9 +78,9 @@ class JobeetJob extends BaseJobeetJob
     $this->save();
   }
 
-  public function extend()
+  public function extend($force = false)
   {
-    if (!$this->expiresSoon())
+    if (!$force && !$this->expiresSoon())
     {
       return false;
     }

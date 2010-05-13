@@ -21,6 +21,13 @@ generator:
           label: Public?
           help: Whether the job can also be published on affiliate websites, or not
       list:
+        actions:
+          deleteNeverActivated:
+            label:  Delete never activated jobs
+        object_actions:
+          extend:   ~
+          _edit:    ~
+          _delete:  ~
         batch_actions:
           _delete:  ~
           extend:   ~
