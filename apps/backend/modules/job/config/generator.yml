@@ -18,5 +18,7 @@ generator:
         title: Job Management
       filter:  ~
       form:    ~
-      edit:    ~
-      new:     ~
+      edit:
+        title: Editing Job "%%company%%" is looking for a "%%position%%"
+      new:
+        title: Job Creation
