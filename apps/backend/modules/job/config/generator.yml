@@ -14,7 +14,8 @@ generator:
     config:
       actions: ~
       fields:  ~
-      list:    ~
+      list:
+        title: Job Management
       filter:  ~
       form:    ~
       edit:    ~
