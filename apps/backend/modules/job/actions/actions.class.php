@@ -42,4 +42,21 @@ class jobActions extends autoJobActions
 
     $this->redirect('jobeet_job');
   }
+
+  public function executeListDeleteNeverActivated(sfWebRequest $request)
+  {
+    $nb = Doctrine_Core::getTable('JobeetJob')->cleanup(60);
+
+    if ($nb)
+    {
+      $this->getUser()->setFlash('notice', sprintf('%d never activated job have
+      been deleted successfully.', $nb));
+    }
+    else
+    {
+      $this->getUser()->setFlash('notice', 'No job to delete.');
+    }
+
+    $this->redirect('jobeet_job');
+  }
 }

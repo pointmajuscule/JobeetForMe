@@ -21,6 +21,7 @@ generator:
           label: Public?
           help: Whether the job can also be published on affiliate websites, or not
       list:
+        table_method: retrieveBackendJobList
         actions:
           deleteNeverActivated:
             label:  Delete never activated jobs
