@@ -15,7 +15,9 @@ generator:
       actions: ~
       fields:  ~
       list:
+        batch_actions: {}
         title: Category Management
+        display: [=name, slug]
       filter:  ~
       form:    ~
       edit:

@@ -13,4 +13,22 @@ require_once dirname(__FILE__).'/../lib/jobGeneratorHelper.class.php';
  */
 class jobActions extends autoJobActions
 {
+  public function executeBatchExtend(sfWebRequest $request)
+  {
+    $ids = $request->getParameter('ids');
+
+    $q = Doctrine_Query::create()
+      ->from('JobeetJob j')
+      ->whereIn('j.id', $ids);
+
+    foreach ($q->execute() as $job)
+    {
+      $job->extend(true);
+    }
+
+    $this->getUser()->setFlash('notice', 'The selected jobs have been extended
+    successfully.');
+
+    $this->redirect('jobeet_job');
+  }
 }
