@@ -60,4 +60,13 @@ class JobeetJobTable extends Doctrine_Table
 
     return $q;
   }
+
+  public function getLatestPost()
+  {
+    $q = Doctrine_Query::create()->from('JobeetJob j');
+
+    $this->addActivejobsQuery($q);
+
+    return $q->fetchOne();
+  }
 }
