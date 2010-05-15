@@ -1,5 +1,13 @@
 # You can find more information about this file on the symfony website:
 # http://www.symfony-project.org/reference/1_4/en/10-Routing
+affiliate:
+  class:  sfDoctrineRouteCollection
+  options:
+    model: JobeetAffiliate
+    actions: [new, create]
+    object_actions:
+      wait: get
+
 api_jobs:
   url:  /api/:token/jobs.:sf_format
   class: sfDoctrineRoute
