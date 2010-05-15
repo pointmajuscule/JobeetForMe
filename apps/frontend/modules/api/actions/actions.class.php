@@ -10,4 +10,9 @@
  */
 class apiActions extends sfActions
 {
+  public function executeList(sfWebRequest $request)
+  {
+    $this->jobs[$this->generateUrl('job_show_user', $job, true)] =
+      $job->asArray($request->getHost());
+  }
 }
