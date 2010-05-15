@@ -99,4 +99,28 @@ class JobeetJobTable extends Doctrine_Table
     return sfConfig::get('sf_data_dir').'/job.'.sfConfig::get('sf_environment').
       '.index';
   }
+
+  public function getForLuceneQuery($query)
+  {
+    $hits = self::getLuceneIndex()->find($query);
+
+    $pks = array();
+    foreach ($hits as $hit)
+    {
+      $pks[] = $hit->pk;
+    }
+
+    if (empty($pks))
+    {
+      return array();
+    }
+
+    $q = $this->createQuery('j')
+      ->whereIn('j.id', $pks)
+      ->limit(20);
+
+    $q = $this->addActiveJobsQuery($q);
+
+    return $q->execute();
+  }
 }
