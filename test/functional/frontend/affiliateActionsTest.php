@@ -3,6 +3,7 @@
 include(dirname(__FILE__).'/../../bootstrap/functional.php');
 
 $browser = new JobeetTestFunctional(new sfBrowser());
+$browser->loadData();
 
 $browser->info('1 - An affiliate can create an account')->
   get('/affiliate/new')->
@@ -12,8 +13,8 @@ $browser->info('1 - An affiliate can create an account')->
     'jobeet_categories_list'  =>
     array(Doctrine_Core::getTable('JobeetCategory')->findOneBySlug('programming')->
     getId())
-  ))->
-    with('response')->isRedirect()->
+  )))->
+    with('response')->isRedirected()->
     followRedirect()->
     with('response')->checkElement('#content h1', 'Your affiliate account
     has been created')->
