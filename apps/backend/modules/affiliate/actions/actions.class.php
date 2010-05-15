@@ -20,7 +20,7 @@ class affiliateActions extends autoAffiliateActions
 
     // send an email to the affiliate
     $message = $this->getMailer()->compose(
-      array('jobeet@example.com' => 'Jobeet Bot'),
+      array('commerce@strebel.fr' => 'Jobeet Bot'),
       $affiliate->getEmail(),
       'Jobeet affiliate token',
       <<<EOF
