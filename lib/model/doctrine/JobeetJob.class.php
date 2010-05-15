@@ -32,6 +32,18 @@ class JobeetJob extends BaseJobeetJob
     return Jobeet::slugify($this->getLocation());
   }
 
+  public function delete(Doctrine_Connection $conn = null)
+  {
+    $index = JobeetJobTable::getLuceneIndex();
+
+    foreach ($index->find('pk:'.$this->getId()) as $hit)
+    {
+      $index->delete($hit->id);
+    }
+
+    return parent::delete($conn);
+  }
+
   public function save(Doctrine_Connection $conn = null)
   {
     if ($this->isNew() && !$this->getExpiresAt())
@@ -47,7 +59,23 @@ class JobeetJob extends BaseJobeetJob
       $this->setToken(sha1($this->getEmail().rand(11111, 99999)));
     }
 
-    return parent::save($conn);
+    $conn = $conn ? $conn : $this->getTable()->getConnection();
+    $conn->beginTransaction();
+    try
+    {
+      $ret = parent::save($conn);
+
+      $this->updateLuceneIndex();
+
+      $conn->commit();
+
+      return $ret;
+    }
+    catch (Exception $e)
+    {
+      $conn->rollBack();
+      throw $e;
+    }
   }
 
   public function getTypeName()
@@ -108,5 +136,36 @@ class JobeetJob extends BaseJobeetJob
       'how_to_apply' => $this->getHowToApply(),
       'expires_at'  => $this->getCreatedAt(),
     );
+  }
+
+  public function updateLuceneIndex()
+  {
+    $index = JobeetJobTable::getLuceneIndex();
+
+    foreach ($index->find('pk:'.$this->getId()) as $hit)
+    {
+      $index->delete($hit->id);
+    }
+
+    if ($this->isExpired() || !$this->getIsActivated())
+    {
+      return;
+    }
+
+    $doc = new Zend_Search_Lucene_Document();
+
+    $doc->addField(Zend_Search_Lucene_Field::Keyword('pk', $this->getId()));
+
+    $doc->addField(Zend_Search_Lucene_Field::UnStored('position',
+      $this->getPosition(), 'utf-8'));
+    $doc->addField(Zend_Search_Lucene_Field::UnStored('company',
+      $this->getCompany(), 'utf-8'));
+    $doc->addField(Zend_Search_Lucene_Field::UnStored('location',
+      $this->getLocation(), 'utf-8'));
+    $doc->addField(Zend_Search_Lucene_Field::UnStored('description',
+      $this->getDescription(), 'utf-8'));
+
+    $index->addDocument($doc);
+    $index->commit();
   }
 }
