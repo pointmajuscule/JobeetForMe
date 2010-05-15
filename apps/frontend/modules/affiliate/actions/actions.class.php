@@ -10,13 +10,6 @@
  */
 class affiliateActions extends sfActions
 {
-  public function executeIndex(sfWebRequest $request)
-  {
-    $this->jobeet_affiliates = Doctrine::getTable('JobeetAffiliate')
-      ->createQuery('a')
-      ->execute();
-  }
-
   public function executeNew(sfWebRequest $request)
   {
     $this->form = new JobeetAffiliateForm();
@@ -33,31 +26,8 @@ class affiliateActions extends sfActions
     $this->setTemplate('new');
   }
 
-  public function executeEdit(sfWebRequest $request)
+  public function executeWait(sfWebRequest $request)
   {
-    $this->forward404Unless($jobeet_affiliate = Doctrine::getTable('JobeetAffiliate')->find(array($request->getParameter('id'))), sprintf('Object jobeet_affiliate does not exist (%s).', $request->getParameter('id')));
-    $this->form = new JobeetAffiliateForm($jobeet_affiliate);
-  }
-
-  public function executeUpdate(sfWebRequest $request)
-  {
-    $this->forward404Unless($request->isMethod(sfRequest::POST) || $request->isMethod(sfRequest::PUT));
-    $this->forward404Unless($jobeet_affiliate = Doctrine::getTable('JobeetAffiliate')->find(array($request->getParameter('id'))), sprintf('Object jobeet_affiliate does not exist (%s).', $request->getParameter('id')));
-    $this->form = new JobeetAffiliateForm($jobeet_affiliate);
-
-    $this->processForm($request, $this->form);
-
-    $this->setTemplate('edit');
-  }
-
-  public function executeDelete(sfWebRequest $request)
-  {
-    $request->checkCSRFProtection();
-
-    $this->forward404Unless($jobeet_affiliate = Doctrine::getTable('JobeetAffiliate')->find(array($request->getParameter('id'))), sprintf('Object jobeet_affiliate does not exist (%s).', $request->getParameter('id')));
-    $jobeet_affiliate->delete();
-
-    $this->redirect('affiliate/index');
   }
 
   protected function processForm(sfWebRequest $request, sfForm $form)
@@ -67,7 +37,7 @@ class affiliateActions extends sfActions
     {
       $jobeet_affiliate = $form->save();
 
-      $this->redirect('affiliate/edit?id='.$jobeet_affiliate->getId());
+      $this->redirect($this->generateUrl('affiliate_wait', $jobeet_affiliate));
     }
   }
 }
